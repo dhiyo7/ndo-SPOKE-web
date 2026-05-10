@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script>
+      // Early patch for fetch assignment errors in certain environments
+      (function() {
+        function patch(obj) {
+          try {
+            var descriptor = Object.getOwnPropertyDescriptor(obj, 'fetch');
+            if (!descriptor || (descriptor.configurable && (!descriptor.writable || !descriptor.set))) {
+              var _f = obj.fetch;
+              Object.defineProperty(obj, 'fetch', {
+                configurable: true,
+                enumerable: true,
+                get: function() { return _f; },
+                set: function(v) { _f = v; }
+              });
+              return true;
+            }
+          } catch (e) {}
+          return false;
+        }
+        if (!patch(window)) patch(Window.prototype);
+      })();
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ndo-SPOKE | AI-Native Meeting Assistant</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

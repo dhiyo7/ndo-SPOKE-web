@@ -1,0 +1,6 @@
+{
+  "name": "ndo-SPOKE",
+  "description": "Professional Landing Page for ndo-SPOKE, the AI-Native Meeting Assistant built with Tauri and Rust.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

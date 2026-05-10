@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  
+  --color-canvas: #EAEAEA;
+  --color-pitch: #1A1A1A;
+  --color-accent: #FFC0CB;
+  --color-muted: #F5F5F5;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-canvas text-pitch font-sans antialiased overflow-x-hidden;
+  }
+}
+
+@layer utilities {
+  .noise-overlay {
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    animation: grain 8s steps(10) infinite;
+  }
+
+  .brutalist-border {
+    @apply border border-pitch;
+  }
+
+  .brutalist-card {
+    @apply bg-white border border-pitch p-8;
+  }
+
+  .brutalist-button {
+    @apply border border-pitch px-6 py-3 font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-all hover:bg-pitch hover:text-white active:translate-x-1 active:translate-y-1;
+  }
+
+  .brutalist-input {
+    @apply bg-transparent border border-pitch p-4 outline-none focus:bg-white transition-colors placeholder:text-pitch/30 font-mono text-sm;
+  }
+
+  .section-title {
+    @apply text-3xl font-extrabold uppercase tracking-tighter mb-8;
+  }
+
+  @keyframes grain {
+    0%, 100% { transform:translate(0, 0); }
+    10% { transform:translate(-5%, -10%); }
+    20% { transform:translate(-15%, 5%); }
+    30% { transform:translate(7%, -25%); }
+    40% { transform:translate(-5%, 25%); }
+    50% { transform:translate(-15%, 10%); }
+    60% { transform:translate(15%, 0%); }
+    70% { transform:translate(0%, 15%); }
+    80% { transform:translate(3%, 35%); }
+    90% { transform:translate(-10%, 10%); }
+  }
+}
