@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Monitor, Cpu, Terminal, ArrowDownToLine, Github, Plus } from 'lucide-react';
 
-export default function DownloadSection() {
+interface DownloadSectionProps {
+  latestRelease: any;
+}
+
+export default function DownloadSection({ latestRelease }: DownloadSectionProps) {
   const [detectedOS, setDetectedOS] = useState<'windows' | 'macos' | 'linux' | 'other'>('other');
 
   useEffect(() => {
@@ -16,7 +20,7 @@ export default function DownloadSection() {
     }
   }, []);
 
-  const downloadLinks = {
+  const defaultLinks = {
     windows: 'https://github.com/dhiyo7/ndo-SPOKE/releases/download/ndo-spoke-v1.0.0/ndo-spoke_1.0.0_x64-setup.exe',
     macosM1: 'https://github.com/dhiyo7/ndo-SPOKE/releases/download/ndo-spoke-v1.0.0/ndo-spoke_1.0.0_aarch64.dmg',
     macosIntel: 'https://github.com/dhiyo7/ndo-SPOKE/releases/download/ndo-spoke-v1.0.0/ndo-spoke_1.0.0_x64.dmg',
@@ -25,6 +29,42 @@ export default function DownloadSection() {
     linuxAppImage: 'https://github.com/dhiyo7/ndo-SPOKE/releases/download/ndo-spoke-v1.0.0/ndo-spoke_1.0.0_amd64.AppImage',
     releasesPage: 'https://github.com/dhiyo7/ndo-SPOKE/releases/tag/ndo-spoke-v1.0.0'
   };
+
+  const [downloadLinks, setDownloadLinks] = useState(defaultLinks);
+  const [version, setVersion] = useState('v1.0.0');
+
+  const getSimpleVersion = (tag: string) => {
+    if (!tag) return 'v1.0.0';
+    const match = tag.match(/v?\d+\.\d+\.\d+/);
+    return match ? (match[0].startsWith('v') ? match[0] : 'v' + match[0]) : tag;
+  };
+
+  useEffect(() => {
+    if (latestRelease) {
+      const assets = latestRelease.assets || [];
+      const tag = latestRelease.tag_name || 'v1.0.0';
+      setVersion(getSimpleVersion(tag));
+
+      const windowsAsset = assets.find((a: any) => a.name.endsWith('.exe'));
+      const macosM1Asset = assets.find((a: any) => a.name.endsWith('.dmg') && (a.name.includes('aarch64') || a.name.includes('arm64')));
+      const macosIntelAsset = assets.find((a: any) => a.name.endsWith('.dmg') && (a.name.includes('x64') || a.name.includes('intel') || a.name.includes('x86_64')));
+      const macosUniversalAsset = assets.find((a: any) => a.name.endsWith('.dmg'));
+
+      const linuxDebAsset = assets.find((a: any) => a.name.endsWith('.deb'));
+      const linuxRpmAsset = assets.find((a: any) => a.name.endsWith('.rpm'));
+      const linuxAppImageAsset = assets.find((a: any) => a.name.endsWith('.AppImage'));
+
+      setDownloadLinks({
+        windows: windowsAsset?.browser_download_url || defaultLinks.windows,
+        macosM1: macosM1Asset?.browser_download_url || macosUniversalAsset?.browser_download_url || defaultLinks.macosM1,
+        macosIntel: macosIntelAsset?.browser_download_url || macosUniversalAsset?.browser_download_url || defaultLinks.macosIntel,
+        linuxDeb: linuxDebAsset?.browser_download_url || defaultLinks.linuxDeb,
+        linuxRpm: linuxRpmAsset?.browser_download_url || defaultLinks.linuxRpm,
+        linuxAppImage: linuxAppImageAsset?.browser_download_url || defaultLinks.linuxAppImage,
+        releasesPage: latestRelease.html_url || defaultLinks.releasesPage
+      });
+    }
+  }, [latestRelease]);
 
   return (
     <section id="download" className="py-24 px-6 border-t border-pitch bg-canvas">
@@ -78,7 +118,7 @@ export default function DownloadSection() {
                 Download for Windows (.exe)
               </a>
               <div className="text-[10px] text-center font-mono opacity-40">
-                v1.0.0 • x64 Setup Installer
+                {version} • x64 Setup Installer
               </div>
             </div>
           </motion.div>
@@ -126,7 +166,7 @@ export default function DownloadSection() {
                 </a>
               </div>
               <div className="text-[10px] text-center font-mono opacity-40">
-                v1.0.0 • Universal DMG Package
+                {version} • Universal DMG Package
               </div>
             </div>
           </motion.div>
@@ -180,7 +220,7 @@ export default function DownloadSection() {
                 </a>
               </div>
               <div className="text-[10px] text-center font-mono opacity-40">
-                v1.0.0 • x64 Linux Packages
+                {version} • x64 Linux Packages
               </div>
             </div>
           </motion.div>

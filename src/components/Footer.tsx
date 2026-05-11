@@ -1,7 +1,19 @@
 import React from 'react';
 import { Twitter, Instagram, Github, Mail } from 'lucide-react';
 
-export default function Footer() {
+interface FooterProps {
+  latestRelease: any;
+}
+
+export default function Footer({ latestRelease }: FooterProps) {
+  const getSimpleVersion = (tag: string) => {
+    if (!tag) return 'v1.0.0';
+    const match = tag.match(/v?\d+\.\d+\.\d+/);
+    return match ? (match[0].startsWith('v') ? match[0] : 'v' + match[0]) : tag;
+  };
+
+  const version = latestRelease ? getSimpleVersion(latestRelease.tag_name) : 'v1.0.0';
+
   return (
     <footer className="bg-white border-t border-pitch">
       <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 border-l border-pitch">
@@ -34,7 +46,7 @@ export default function Footer() {
 
         {/* Branding */}
         <div className="p-8 border-r border-pitch bg-pitch text-white flex items-center justify-center">
-           <span className="font-extrabold italic uppercase tracking-tighter text-sm">ndo-SPOKE v1.0.0</span>
+           <span className="font-extrabold italic uppercase tracking-tighter text-sm">ndo-SPOKE {version}</span>
         </div>
       </div>
       

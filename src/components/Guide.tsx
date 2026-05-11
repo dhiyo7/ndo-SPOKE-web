@@ -2,9 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, Check, AlertTriangle, ShieldCheck } from 'lucide-react';
 
-export default function GuideSection() {
+interface GuideSectionProps {
+  latestRelease: any;
+}
+
+export default function GuideSection({ latestRelease }: GuideSectionProps) {
   const [activeTab, setActiveTab] = useState<'windows' | 'macos' | 'linux'>('windows');
   const [copiedText, setCopiedText] = useState<'linux-deb' | 'linux-rpm' | 'macos' | null>(null);
+
+  const [linuxDebFilename, setLinuxDebFilename] = useState('ndo-spoke_1.0.0_amd64.deb');
+  const [linuxRpmFilename, setLinuxRpmFilename] = useState('ndo-spoke_1.0.0_amd64.rpm');
 
   useEffect(() => {
     const ua = window.navigator.userAgent.toLowerCase();
@@ -17,8 +24,21 @@ export default function GuideSection() {
     }
   }, []);
 
-  const linuxDebCommands = `sudo dpkg -i ndo-spoke_1.0.0_amd64.deb\nsudo apt-get install -f`;
-  const linuxRpmCommands = `sudo rpm -i ndo-spoke_1.0.0_amd64.rpm`;
+  useEffect(() => {
+    if (latestRelease && latestRelease.assets) {
+      const debAsset = latestRelease.assets.find((a: any) => a.name.endsWith('.deb'));
+      if (debAsset) {
+        setLinuxDebFilename(debAsset.name);
+      }
+      const rpmAsset = latestRelease.assets.find((a: any) => a.name.endsWith('.rpm'));
+      if (rpmAsset) {
+        setLinuxRpmFilename(rpmAsset.name);
+      }
+    }
+  }, [latestRelease]);
+
+  const linuxDebCommands = `sudo dpkg -i ${linuxDebFilename}\nsudo apt-get install -f`;
+  const linuxRpmCommands = `sudo rpm -i ${linuxRpmFilename}`;
   const macosQuarantineCommand = `sudo xattr -rd com.apple.quarantine /Applications/ndo-SPOKE.app`;
 
   const copyToClipboard = (text: string, id: 'linux-deb' | 'linux-rpm' | 'macos') => {
