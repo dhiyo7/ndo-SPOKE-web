@@ -113,6 +113,7 @@ export default function DownloadSection({ latestRelease }: DownloadSectionProps)
             <div className="space-y-3">
               <a 
                 href={downloadLinks.windows}
+                data-umami-event="download-windows"
                 className="brutalist-button w-full bg-pitch text-white text-xs hover:bg-accent hover:text-pitch text-center"
               >
                 Download for Windows (.exe)
@@ -154,12 +155,14 @@ export default function DownloadSection({ latestRelease }: DownloadSectionProps)
               <div className="grid grid-cols-2 gap-2">
                 <a 
                   href={downloadLinks.macosM1}
+                  data-umami-event="download-macos-m1"
                   className="brutalist-button text-[10px] px-2 py-2.5 bg-pitch text-white hover:bg-accent hover:text-pitch text-center"
                 >
                   Apple M1/M2/M3
                 </a>
                 <a 
                   href={downloadLinks.macosIntel}
+                  data-umami-event="download-macos-intel"
                   className="brutalist-button text-[10px] px-2 py-2.5 bg-white text-pitch hover:bg-pitch hover:text-white text-center"
                 >
                   Intel Chip
@@ -202,18 +205,21 @@ export default function DownloadSection({ latestRelease }: DownloadSectionProps)
               <div className="grid grid-cols-3 gap-1">
                 <a 
                   href={downloadLinks.linuxDeb}
+                  data-umami-event="download-linux-deb"
                   className="brutalist-button text-[9px] px-1 py-2.5 bg-pitch text-white hover:bg-accent hover:text-pitch text-center"
                 >
                   Deb (.deb)
                 </a>
                 <a 
                   href={downloadLinks.linuxRpm}
+                  data-umami-event="download-linux-rpm"
                   className="brutalist-button text-[9px] px-1 py-2.5 bg-white text-pitch hover:bg-accent hover:text-pitch text-center"
                 >
                   Rpm (.rpm)
                 </a>
                 <a 
                   href={downloadLinks.linuxAppImage}
+                  data-umami-event="download-linux-appimage"
                   className="brutalist-button text-[9px] px-1 py-2.5 bg-white text-pitch hover:bg-pitch hover:text-white text-center"
                 >
                   AppImage

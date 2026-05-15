@@ -184,6 +184,7 @@ export default function CTA() {
                     
                     <button 
                       disabled={status === 'loading'}
+                      data-umami-event="report-issue"
                       className="brutalist-button bg-pitch text-white w-full py-4 text-sm group disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                        {status === 'loading' ? (
