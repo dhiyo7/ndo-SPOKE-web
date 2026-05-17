@@ -1,0 +1,8 @@
+# ====================================================================
+# UMAMI ANALYTICS ADBLOCKER BYPASS (NETLIFY REWRITE)
+# ====================================================================
+# Jalur disamarkan ke '/sys/info/umami.js' agar lolos dari adblocker.
+# Mengalihkan request secara diam-diam ke script asli Umami Cloud.
+
+/sys/info/umami.js   https://cloud.umami.is/script.js   200 
+/sys/info/api/send   https://cloud.umami.is/api/send    200
