@@ -15,20 +15,11 @@ export default function App() {
   useEffect(() => {
     const fetchLatestRelease = async () => {
       try {
-        const token = import.meta.env.VITE_GITHUB_TOKEN;
-        const repo = import.meta.env.VITE_GITHUB_REPO; // Expected format: owner/repo
+        const repo = import.meta.env.VITE_GITHUB_REPO || 'dhiyo7/ndo-SPOKE'; // Expected format: owner/repo
         
-        if (!repo) {
-          console.warn('VITE_GITHUB_REPO is not configured in environment variables.');
-          return;
-        }
-
         const headers: Record<string, string> = {
           'Accept': 'application/vnd.github.v3+json',
         };
-        if (token) {
-          headers['Authorization'] = `token ${token}`;
-        }
 
         const response = await axios.get(
           `https://api.github.com/repos/${repo}/releases/latest`,
