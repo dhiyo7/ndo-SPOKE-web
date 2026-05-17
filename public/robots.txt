@@ -1,0 +1,10 @@
+# ====================================================================
+# ROBOTS.TXT FOR NDOSPOKE.WEB.ID
+# ====================================================================
+# Memberikan izin kepada semua bot mesin pencari untuk merayapi web
+
+User-agent: *
+Allow: /
+
+# Daftarkan lokasi peta situs (Sitemap)
+Sitemap: https://ndospoke.web.id/sitemap.xml
